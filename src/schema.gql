@@ -1,0 +1,96 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  """Example field (placeholder)"""
+  id: String!
+
+  """Example field (placeholder)"""
+  firstName: String!
+
+  """Example field (placeholder)"""
+  lastName: String!
+
+  """Example field (placeholder)"""
+  email: String!
+}
+
+type ImageEntity {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  description: String!
+  url: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type VideoEntity {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  description: String!
+  longDescription: String!
+  url: String!
+  landscapePoster: ImageEntity!
+  portraitPoster: ImageEntity!
+  thumbnail: ImageEntity!
+}
+
+type ShowEntity {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  description: String!
+}
+
+type SeasonEntity {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  show: ShowEntity!
+}
+
+type Query {
+  user(id: Int!): User!
+  videos: [VideoEntity!]!
+  video(id: String!): VideoEntity!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: Int!): User!
+  createVideo(createVideoInput: CreateVideoInput!): VideoEntity!
+}
+
+input CreateUserInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateUserInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreateVideoInput {
+  """title field"""
+  title: String!
+
+  """description """
+  description: String!
+
+  """Long Descriptoin  """
+  longDescription: String!
+  thumbnailImage: String
+}
