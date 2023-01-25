@@ -32,6 +32,7 @@ export class VideosService {
 
     const image: ImageEntity = await this.imageRepository.save(newImage);
     newVideo.thumbnail = image;
+    console.log('%cvideos.service.ts line:35 object', 'color: #007acc;', object);
     return await this.videoRepository.create(newVideo);
     // return newVideo;
   }

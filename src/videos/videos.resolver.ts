@@ -44,7 +44,7 @@ export class VideosResolver {
     console.log(fName);
     console.log(lName);
     console.log(thumbnail);
-    return 1;
+    return 5;
   }
   // @Mutation(() => Video)
   // updateVideo(@Args("updateVideoInput") updateVideoInput: UpdateVideoInput) {
