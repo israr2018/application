@@ -19,12 +19,15 @@ export class CreateVideoInput {
   @Field(() => String, { description: "Long Descriptoin  " })
   longDescription: string;
 
+  @Field(() => String, { description: "url " })
+  url: string;
+
   @Field(() => String, { nullable: true })
   thumbnailImage: string;
 
   // @Field(() => String, { description: "portraitPoster field" })
   // portraitPoster: string;
 
-  // @Field(() => String, { description: "landscapePoster field" })
+  // @Field(() => GraphQLUpload, { description: "landscapePoster field" })
   // landscapePoster: string;
 }

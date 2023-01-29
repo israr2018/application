@@ -1,20 +1,18 @@
 /* eslint-disable no-restricted-imports */
-import { Injectable } from "@nestjs/common";
+import { ConsoleLogger, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { RelationId, Repository } from "typeorm";
 
 import { CreateVideoInput } from "../videos/dto/create-video.input";
 import { VideoEntity } from "src/entities/video.entity";
 import { CloudinaryService } from "src/cloudinary/cloudinary.service";
 import { ImageEntity } from "src/entities/image.entity";
+import { VideoType } from "src/entities/enums/video-type";
 @Injectable()
 export class VideosService {
   constructor(
     @InjectRepository(VideoEntity)
-    private readonly videoRepository: Repository<VideoEntity>,
-    @InjectRepository(ImageEntity)
-    private readonly imageRepository: Repository<ImageEntity>,
-    private readonly cloudinaryService: CloudinaryService,
+    private readonly videoRepository: Repository<VideoEntity>, // @InjectRepository(ImageEntity) // private readonly imageRepository: Repository<ImageEntity>, // private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   async createVideo(createVideoInput: CreateVideoInput): Promise<VideoEntity> {
@@ -22,32 +20,22 @@ export class VideosService {
     newVideo.title = createVideoInput.title;
     newVideo.description = createVideoInput.description;
     newVideo.longDescription = createVideoInput.longDescription;
-    const cloudinaryUrl: string = await this.cloudinaryService.uploadBase64(
-      createVideoInput.thumbnailImage,
-    );
-    const newImage = new ImageEntity();
-    newImage.title = "thumbnail";
-    newImage.url = cloudinaryUrl;
-    newImage.description = "descriptions";
-
-    const image: ImageEntity = await this.imageRepository.save(newImage);
-    newVideo.thumbnail = image;
-    console.log('%cvideos.service.ts line:35 object', 'color: #007acc;', object);
-    return await this.videoRepository.create(newVideo);
-    // return newVideo;
+    newVideo.videoType = "standalone";
+    newVideo.url = createVideoInput.url;
+    newVideo.thumbnail = { id: createVideoInput.thumbnailImage } as ImageEntity;
+    const saveVideo: VideoEntity = await this.videoRepository.save(newVideo);
+    return saveVideo;
   }
 
   async findAll(): Promise<VideoEntity[]> {
-    // return this.showRepository.find({ relations: { images: true } });
-    return await this.videoRepository.find();
+    console.log("findAll get Called!");
+    return this.videoRepository.find({ relations: { thumbnail: true } });
   }
 
   async findById(videoId: string): Promise<VideoEntity> {
     return await this.videoRepository.findOne({
       where: { id: videoId },
+      relations: { thumbnail: true },
     });
-  }
-  async getVideoThumbnail(imageEntity: string): Promise<ImageEntity> {
-    return this.imageRepository.findOne({ where: { id: videoId } });
   }
 }

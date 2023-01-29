@@ -28,15 +28,15 @@ export class VideoEntity extends BaseEntity {
   @Column({ type: "enum", enum: VideoType })
   videoType: string;
 
-  @JoinColumn()
-  @OneToOne(() => ImageEntity, (image) => image.id)
-  @Field()
-  landscapePoster: ImageEntity;
+  // @JoinColumn()
+  // @OneToOne(() => ImageEntity, (image) => image.id)
+  // @Field()
+  // landscapePoster: ImageEntity;
 
-  @JoinColumn()
-  @OneToOne(() => ImageEntity, (image) => image.id)
-  @Field()
-  portraitPoster: ImageEntity;
+  // @JoinColumn()
+  // @OneToOne(() => ImageEntity, (image) => image.id)
+  // @Field()
+  // portraitPoster: ImageEntity;
 
   @JoinColumn()
   @OneToOne(() => ImageEntity, (image) => image.id)
