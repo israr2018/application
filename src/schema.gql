@@ -2,20 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
-  """Example field (placeholder)"""
-  id: String!
-
-  """Example field (placeholder)"""
-  firstName: String!
-
-  """Example field (placeholder)"""
-  lastName: String!
-
-  """Example field (placeholder)"""
-  email: String!
-}
-
 type ImageEntity {
   id: String!
   createdAt: DateTime!
@@ -38,49 +24,28 @@ type VideoEntity {
   description: String!
   longDescription: String!
   url: String!
-  landscapePoster: ImageEntity!
-  portraitPoster: ImageEntity!
   thumbnail: ImageEntity!
 }
 
-type ShowEntity {
-  id: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  title: String!
-  description: String!
-}
-
-type SeasonEntity {
-  id: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  name: String!
-  show: ShowEntity!
+type SignedUrl {
+  signedUrl: String!
 }
 
 type Query {
-  user(id: Int!): User!
   videos: [VideoEntity!]!
+  videosByType(type: VideoTypeFilter!): [VideoEntity!]!
   video(id: String!): VideoEntity!
+  getSigneUrl: SignedUrl!
+}
+
+input VideoTypeFilter {
+  type: String!
 }
 
 type Mutation {
-  createUser(createUserInput: CreateUserInput!): User!
-  updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(id: Int!): User!
   createVideo(createVideoInput: CreateVideoInput!): VideoEntity!
-}
-
-input CreateUserInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input UpdateUserInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+  updateVideo(updateVideoInput: UpdateVideoInput!): VideoEntity!
+  removeVideo(id: String!): Boolean!
 }
 
 input CreateVideoInput {
@@ -92,5 +57,19 @@ input CreateVideoInput {
 
   """Long Descriptoin  """
   longDescription: String!
+
+  """url """
+  url: String!
   thumbnailImage: String
+  videoType: String
+}
+
+input UpdateVideoInput {
+  title: String!
+  description: String!
+  longDescription: String!
+  url: String!
+  thumbnailImage: String
+  videoType: String
+  id: String!
 }

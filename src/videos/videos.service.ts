@@ -1,13 +1,13 @@
-/* eslint-disable no-restricted-imports */
-import { ConsoleLogger, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { RelationId, Repository } from "typeorm";
+import { Repository } from "typeorm";
 
 import { CreateVideoInput } from "../videos/dto/create-video.input";
-import { VideoEntity } from "src/entities/video.entity";
-import { CloudinaryService } from "src/cloudinary/cloudinary.service";
-import { ImageEntity } from "src/entities/image.entity";
-import { VideoType } from "src/entities/enums/video-type";
+// import { VideoEntity } from "src/entities/video.entity";
+// import { ImageEntity } from "src/entities/image.entity";
+import { VideoEntity } from "../entities/video.entity";
+import { ImageEntity } from "../entities/image.entity";
+import { UpdateVideoInput } from "./dto/update-video.input";
 @Injectable()
 export class VideosService {
   constructor(
@@ -23,13 +23,30 @@ export class VideosService {
     newVideo.videoType = "standalone";
     newVideo.url = createVideoInput.url;
     newVideo.thumbnail = { id: createVideoInput.thumbnailImage } as ImageEntity;
+    // const newVideo: VideoEntity = { ...createVideoInput };
+    //       newVideo.thumbnail=
     const saveVideo: VideoEntity = await this.videoRepository.save(newVideo);
     return saveVideo;
+    // const insertedVideo = await this.videoRepository.insert({
+    //   ...createVideoInput,
+    //   thumbnail: { id: createVideoInput.thumbnailImage } as ImageEntity,
+    // });
+    // return insertedVideo;
+    // return await this.videoRepository.insert({
+    //   ...createVideoInput,
+    //   thumbnail: { id: createVideoInput.thumbnailImage } as ImageEntity,
+    // });
   }
 
   async findAll(): Promise<VideoEntity[]> {
     console.log("findAll get Called!");
     return this.videoRepository.find({ relations: { thumbnail: true } });
+  }
+  async findByType(videoType: string): Promise<VideoEntity[]> {
+    return this.videoRepository.find({
+      where: { videoType },
+      relations: { thumbnail: true },
+    });
   }
 
   async findById(videoId: string): Promise<VideoEntity> {
@@ -37,5 +54,18 @@ export class VideosService {
       where: { id: videoId },
       relations: { thumbnail: true },
     });
+  }
+
+  async update(id: string, updateVideoInput: UpdateVideoInput) {
+    await this.videoRepository.update(id, updateVideoInput);
+  }
+
+  async remove(id: string): Promise<boolean> {
+    const deleted = await this.videoRepository.delete(id);
+    if (deleted) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

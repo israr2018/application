@@ -25,6 +25,9 @@ export class CreateVideoInput {
   @Field(() => String, { nullable: true })
   thumbnailImage: string;
 
+  @Field(() => String, { nullable: true })
+  videoType: string;
+
   // @Field(() => String, { description: "portraitPoster field" })
   // portraitPoster: string;
 
