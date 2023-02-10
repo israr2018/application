@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
@@ -57,15 +57,11 @@ export class VideosService {
   }
 
   async update(id: string, updateVideoInput: UpdateVideoInput) {
-    await this.videoRepository.update(id, updateVideoInput);
-  }
-
-  async remove(id: string): Promise<boolean> {
-    const deleted = await this.videoRepository.delete(id);
-    if (deleted) {
-      return true;
-    } else {
-      return false;
+    const existingVideo = await this.videoRepository.findOne({ where: { id } });
+    if (!existingVideo) {
+      throw new BadRequestException("Video not found!");
     }
+    const toUpdate = { ...existingVideo, updateVideoInput };
+    return await this.videoRepository.save(toUpdate);
   }
 }

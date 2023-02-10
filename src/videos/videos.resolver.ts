@@ -70,9 +70,4 @@ export class VideosResolver {
   updateVideo(@Args("updateVideoInput") updateVideoInput: UpdateVideoInput) {
     return this.videosService.update(updateVideoInput.id, updateVideoInput);
   }
-
-  @Mutation(() => Boolean)
-  removeVideo(@Args("id", { type: () => String }) id: string) {
-    return this.videosService.remove(id);
-  }
 }
