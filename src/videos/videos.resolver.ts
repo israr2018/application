@@ -69,5 +69,6 @@ export class VideosResolver {
   @Mutation(() => VideoEntity)
   updateVideo(@Args("updateVideoInput") updateVideoInput: UpdateVideoInput) {
     return this.videosService.update(updateVideoInput.id, updateVideoInput);
+    //test
   }
 }
